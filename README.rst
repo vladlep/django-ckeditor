@@ -1,11 +1,11 @@
 Django CKEditor
 ===============
-* riklaunim / django-ckeditor is on PyPi as https://pypi.python.org/pypi/django-ckeditor-updated - latest code, works with latest Django
-* shaunsephton / django-ckeditor is on PyPi as https://pypi.python.org/pypi/django-ckeditor - still old release not compatible with newer Django versions
+
+**As of version 4.4.4 django-ckeditor-updated have been merged with django-ckeditor and released as django-ckeditor 4.4.4.**
+
+**Any new work will be done on the shaunsephton/django-ckeditor only.**
 
 
-**This fork, django-ckeditor-updated, has different configuration than the old django ckeditor. All of my changes were recently merged to shaunsephton repository
-but they havent been released yet as a package. Until django-ckeditor won't get new and constant releases I'be maintaining this fork.***
 
 
 **Django admin CKEditor integration.**
