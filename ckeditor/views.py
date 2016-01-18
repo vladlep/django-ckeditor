@@ -2,6 +2,7 @@ from datetime import datetime
 import os
 
 from django.conf import settings
+from django.utils.module_loading import import_string
 from django.core.files.storage import default_storage
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse
@@ -11,6 +12,14 @@ from django.template import RequestContext
 from ckeditor import image_processing
 from ckeditor import utils
 
+
+def get_storage():
+    ckeditor_storage = getattr(settings, 'CKEDITOR_STORAGE_BACKEND', None)
+    if ckeditor_storage:
+        storage = import_string(ckeditor_storage)()
+    else:
+        storage = default_storage
+    return storage
 
 def get_upload_filename(upload_name, user):
     # If CKEDITOR_RESTRICT_BY_USER is True upload file to user specific path.
@@ -29,7 +38,7 @@ def get_upload_filename(upload_name, user):
     if getattr(settings, "CKEDITOR_UPLOAD_SLUGIFY_FILENAME", True):
         upload_name = utils.slugify_filename(upload_name)
 
-    return default_storage.get_available_name(os.path.join(upload_path, upload_name))
+    return get_storage().get_available_name(os.path.join(upload_path, upload_name))
 
 
 @csrf_exempt
@@ -56,7 +65,7 @@ def upload(request):
 
     # Open output file in which to store upload.
     upload_filename = get_upload_filename(upload.name, request.user)
-    saved_path = default_storage.save(upload_filename, upload)
+    saved_path = get_storage().save(upload_filename, upload)
 
     if backend.should_create_thumbnail(saved_path):
         backend.create_thumbnail(saved_path)
@@ -89,7 +98,7 @@ def get_image_files(user=None, path=''):
     browse_path = os.path.join(settings.CKEDITOR_UPLOAD_PATH, user_path, path)
 
     try:
-        storage_list = default_storage.listdir(browse_path)
+        storage_list = get_storage().listdir(browse_path)
     except NotImplementedError:
         return
     except OSError:
