@@ -3,6 +3,7 @@ import os.path
 import random
 import string
 
+from django.conf import settings
 from django.core.files.storage import default_storage
 from django.template.defaultfilters import slugify
 from django.utils.module_loading import import_string
