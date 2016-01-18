@@ -46,7 +46,7 @@ def get_media_url(path):
     Determine system file's media URL.
     """
     from django.conf import settings
-    ckeditor_storage = settings.CKEDITOR_STORAGE_BACKEND
+    ckeditor_storage = getattr(settings, 'CKEDITOR_STORAGE_BACKEND', None)
     if ckeditor_storage:
         storage = import_string(ckeditor_storage)()
     else:
