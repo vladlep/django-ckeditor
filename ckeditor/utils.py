@@ -5,6 +5,7 @@ import string
 
 from django.core.files.storage import default_storage
 from django.template.defaultfilters import slugify
+from django.utils.module_loading import import_string
 
 
 class NotAnImageException(Exception):
@@ -44,4 +45,9 @@ def get_media_url(path):
     """
     Determine system file's media URL.
     """
-    return default_storage.url(path)
+    ckeditor_storage = settings.CKEDITOR_STORAGE_BACKEND
+    if ckeditor_storage:
+        storage = import_string(ckeditor_storage)()
+    else:
+        storage = default_storage
+    return storage.url(path)    
