@@ -3,7 +3,6 @@ import os.path
 import random
 import string
 
-from django.conf import settings
 from django.core.files.storage import default_storage
 from django.template.defaultfilters import slugify
 from django.utils.module_loading import import_string
@@ -46,6 +45,7 @@ def get_media_url(path):
     """
     Determine system file's media URL.
     """
+    from django.conf import settings
     ckeditor_storage = settings.CKEDITOR_STORAGE_BACKEND
     if ckeditor_storage:
         storage = import_string(ckeditor_storage)()
