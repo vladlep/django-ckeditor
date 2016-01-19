@@ -41,14 +41,20 @@ def get_image_format(extension):
     return mimetypes.types_map[extension.lower()]
 
 
-def get_media_url(path):
-    """
-    Determine system file's media URL.
-    """
+def get_storage():
     from django.conf import settings
     ckeditor_storage = getattr(settings, 'CKEDITOR_STORAGE_BACKEND', None)
     if ckeditor_storage:
         storage = import_string(ckeditor_storage)()
     else:
         storage = default_storage
+    return storage
+
+
+def get_media_url(path):
+    """
+    Determine system file's media URL.
+    """
+    storage = get_storage()
     return storage.url(path)    
+

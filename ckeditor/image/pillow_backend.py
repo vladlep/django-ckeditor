@@ -7,7 +7,6 @@ except ImportError:
     import Image
     import ImageOps
 
-from django.core.files.storage import default_storage
 from django.core.files.uploadedfile import InMemoryUploadedFile
 
 from ckeditor import utils
@@ -27,7 +26,7 @@ def create_thumbnail(file_path):
     thumbnail_format = utils.get_image_format(os.path.splitext(file_path)[1])
     file_format = thumbnail_format.split('/')[1]
 
-    image = default_storage.open(file_path)
+    image = utils.get_storage().open(file_path)
     image = Image.open(image)
 
     # Convert to RGB if necessary
@@ -50,11 +49,11 @@ def create_thumbnail(file_path):
         None)
     thumbnail.seek(0)
 
-    return default_storage.save(thumbnail_filename, thumbnail)
+    return utils.get_storage().save(thumbnail_filename, thumbnail)
 
 
 def should_create_thumbnail(file_path):
-    image = default_storage.open(file_path)
+    image = utils.get_storage().open(file_path)
     try:
         Image.open(image)
     except IOError:
