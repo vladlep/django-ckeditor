@@ -51,19 +51,11 @@ def create_thumbnail(file_path):
         None)
     thumbnail.seek(0)
 
-<<<<<<< HEAD:ckeditor_uploader/image/pillow_backend.py
     return storage.save(thumbnail_filename, thumbnail)
 
 
 def should_create_thumbnail(file_path):
     image = storage.open(file_path)
-=======
-    return utils.get_storage().save(thumbnail_filename, thumbnail)
-
-
-def should_create_thumbnail(file_path):
-    image = utils.get_storage().open(file_path)
->>>>>>> update default storage to custom storage for thumbnail creation:ckeditor/image/pillow_backend.py
     try:
         Image.open(image)
     except IOError:
